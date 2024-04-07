@@ -55,3 +55,202 @@ The annotation files (jsons) consists of the same root fields or top-level field
 }
 ```
 Not every annotation files consists of all the root fields above. Depending on the type of data provided in the dataset discussed earlier, some of the root fields might be excluded. 
+
+### Root field: images 
+The images field consists information about the panoramix X-rays. It is a list of dictionaries, each dictionary representing an X-ray. <br> 
+```json
+{
+  "images": [
+    {
+        "height": 1316,
+        "width": 2744,
+        "id": 1,
+        "file_name": "train_673.png"
+    },
+    {
+        "height": 1504,
+        "width": 2872,
+        "id": 2,
+        "file_name": "train_283.png"
+    },
+    ...
+  ],
+  "annotations": [...], 
+  "categories_1": [...], 
+  "categories_2": [...], 
+  "categories_3": [...] 
+}
+```
+
+### Root field: annotations
+The annotations field consists of the annotations for each image. It is a list of dictionaries, each dictionary represents the annotations an image. <br>
+Note: It is important to know that there could be more than one annotations dictionary/object for an image. Since a single image can consist of multiple labels. 
+```json
+{
+  "images": [...],
+  "annotations": [
+    {
+        "iscrowd": 0,
+        "image_id": 1,
+        "bbox": [
+            542.0,
+            698.0,
+            220.0,
+            271.0
+        ],
+        "segmentation": [
+            [
+                621,
+                703,
+                573,
+                744,
+                542,
+                885,
+                580,
+                945,
+                650,
+                969,
+                711,
+                883,
+                762,
+                807,
+                748,
+                741,
+                649,
+                698
+            ]
+        ],
+        "id": 1,
+        "area": 39683,
+        "category_id_1": 3,
+        "category_id_2": 7,
+        "category_id_3": 0
+    },
+    ...
+  ], 
+  "categories_1": [...],
+  "categories_2": [...], 
+  "categories_3": [...] 
+}
+```
+
+### Root field: categories_1
+Maps encoded values to class labels. 
+```json
+{
+  "images": [...],
+  "annotations": [...], 
+  "categories_1": [
+    {
+        "id": 0,
+        "name": "1",
+        "supercategory": "1"
+    },
+    {
+        "id": 1,
+        "name": "2",
+        "supercategory": "2"
+    },
+    {
+        "id": 2,
+        "name": "3",
+        "supercategory": "3"
+    },
+    {
+        "id": 3,
+        "name": "4",
+        "supercategory": "4"
+    }
+  ], 
+  "categories_2": [...], 
+  "categories_3": [...] 
+}
+```
+
+### Root field: categories_2
+Maps encoded values to class labels. 
+```json
+{
+  "images": [...],
+  "annotations": [...], 
+  "categories_1": [...], 
+  "categories_2": [
+    {
+        "id": 0,
+        "name": "1",
+        "supercategory": "1"
+    },
+    {
+        "id": 1,
+        "name": "2",
+        "supercategory": "2"
+    },
+    {
+        "id": 2,
+        "name": "3",
+        "supercategory": "3"
+    },
+    {
+        "id": 3,
+        "name": "4",
+        "supercategory": "4"
+    },
+    {
+        "id": 4,
+        "name": "5",
+        "supercategory": "5"
+    },
+    {
+        "id": 5,
+        "name": "6",
+        "supercategory": "6"
+    },
+    {
+        "id": 6,
+        "name": "7",
+        "supercategory": "7"
+    },
+    {
+        "id": 7,
+        "name": "8",
+        "supercategory": "8"
+    }
+  ], 
+  "categories_3": [...] 
+}
+```
+
+### Root field: categories_3
+Maps encoded values to class labels. 
+```json
+{
+  "images": [...],
+  "annotations": [...], 
+  "categories_1": [...], 
+  "categories_2": [...], 
+  "categories_3": [
+    {
+        "id": 0,
+        "name": "Impacted",
+        "supercategory": "Impacted"
+    },
+    {
+        "id": 1,
+        "name": "Caries",
+        "supercategory": "Caries"
+    },
+    {
+        "id": 2,
+        "name": "Periapical Lesion",
+        "supercategory": "Periapical Lesion"
+    },
+    {
+        "id": 3,
+        "name": "Deep Caries",
+        "supercategory": "Deep Caries"
+    }
+  ] 
+}
+```
+
+# Method
