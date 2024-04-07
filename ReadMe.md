@@ -53,4 +53,5 @@ The annotation files (jsons) consists of the same root fields or top-level field
   "categories_2": [...], -> maps encoded values to enumeration labels 1, 2, 3, 4, 5, 6, 7, 8
   "categories_3": [...] -> maps encoded values to diagnosis labels Impacted, Caries, Periapical Lesion, Deep Caries 
 }
+```
 Not every annotation files consists of all the root fields above. Depending on the type of data provided in the dataset discussed earlier, some of the root fields might be excluded. 
