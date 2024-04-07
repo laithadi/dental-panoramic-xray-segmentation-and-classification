@@ -1,20 +1,25 @@
 import cv2
 import matplotlib.pyplot as plt
-import json
 import numpy as np
 import os
-import shutil
 import pandas as pd
+from utils import (
+    load_json, 
+    write_dir, 
+    create_folders, 
+    get_poly_points, 
+    shrink_polygon)
+from constants import (
+    TRAIN_XRAY_PATH,
+    METADATA,
 
-TRAIN_PATH = "train/xrays"
-METADATA = "train/metadata.json"
-
-CROPPED = "cropped_dataset/train/cropped"
-MASK = "cropped_dataset/train/mask"
-BLACK_BG = "cropped_dataset/train/black_bg"
-WHTIE_BG = "cropped_dataset/train/white_bg"
-DATASET = "cropped_dataset"
-LABELS = "cropped_dataset/labels.csv"
+    CROPPED,
+    MASK,
+    BLACK_BG,
+    WHTIE_BG,
+    LABELS_PATH,
+    EXPERIMENT_PATH
+)
 
 def get_id_img_map(image_metadata):
     id_img_map = {}
@@ -25,21 +30,6 @@ def get_id_img_map(image_metadata):
         id_img_map[id] = fname
     
     return id_img_map
-
-def load_json(path):
-    with open(path) as f:
-        metadata = json.load(f)
-    
-    return metadata
-
-def get_poly_points(seg):
-    pts = []
-    for i in range(0, len(seg), 2):
-        x = seg[i]
-        y = seg[i+1]
-        pts.append([x, y])
-    pts = np.array(pts)
-    return pts
 
 def crop_img(im, poly_points):
     rect = cv2.boundingRect(poly_points)
@@ -58,26 +48,13 @@ def crop_img(im, poly_points):
 
     return [cropped, mask, croped_black_bg, croped_white_bg]
 
-def create_folder_structure(delete_existing=True):
-    if delete_existing and os.path.exists(DATASET):
-        shutil.rmtree(DATASET)
-
-    paths = [CROPPED, MASK, BLACK_BG, WHTIE_BG]
-    for p in paths:
-        if not os.path.exists(p):
-            os.makedirs(p)
-
-def write_dir(dir, img, fname):
-    write_path = os.path.join(dir, fname)
-    cv2.imwrite(write_path, img)
-
 def create_segmented_imgs_and_labels(id_img_map, annotations):
     labels = {}
     for i, annotation in enumerate(annotations):
         img_id = annotation['image_id']
         seg = annotation['segmentation']
         assert len(seg) == 1
-        img_path = os.path.join(TRAIN_PATH, id_img_map[img_id])
+        img_path = os.path.join(TRAIN_XRAY_PATH, id_img_map[img_id])
         im = cv2.imread(img_path)
         poly_points = get_poly_points(seg[0])
         croped_imgs = crop_img(im, poly_points)
@@ -100,11 +77,45 @@ def create_segmented_imgs_and_labels(id_img_map, annotations):
     df = pd.DataFrame.from_dict(data = labels, orient='index') 
     df.columns = ['label', 'source_img']
     df.index.name = 'id'
-    df.to_csv(LABELS) 
+    df.to_csv(LABELS_PATH)
 
-metadata = load_json(METADATA)
-image_metadata = metadata['images']
-annotations = metadata['annotations']
-id_img_map = get_id_img_map(image_metadata)
-create_folder_structure()
-create_segmented_imgs_and_labels(id_img_map, annotations)
+def create_crop_img_with_mask_overlay(id_img_map, annotations, scale_fact):
+    dir = os.path.join(EXPERIMENT_PATH, str(scale_fact))
+    create_folders([dir])
+    for i, annotation in enumerate(annotations):
+        img_id = annotation['image_id']
+        seg = annotation['segmentation']
+        assert len(seg) == 1
+        img_path = os.path.join(TRAIN_XRAY_PATH, id_img_map[img_id])
+        im = cv2.imread(img_path)
+        poly_points = get_poly_points(seg[0])
+        poly_points = shrink_polygon(poly_points, xfact=scale_fact, yfact=scale_fact)
+        croped_imgs = crop_img(im, poly_points)
+
+        cropped = croped_imgs[0]
+        mask = croped_imgs[1]
+        fname = "{}.png".format(i+1)
+        file_path = os.path.join(dir, fname)
+
+        plt.figure()
+        plt.imshow(cropped, 'gray', interpolation='none')
+        plt.imshow(mask, 'jet', interpolation='none', alpha=0.5)
+        plt.savefig(file_path)
+        plt.close()
+
+        if (i+1) == 100:
+            break
+
+def main():
+    EXPERIMENT_MODE = True
+    metadata = load_json(METADATA)
+    image_metadata = metadata['images']
+    annotations = metadata['annotations']
+    id_img_map = get_id_img_map(image_metadata)
+    if EXPERIMENT_MODE:
+        create_crop_img_with_mask_overlay(id_img_map, annotations, 0.95)
+    else:
+        create_folders([CROPPED, MASK, BLACK_BG, WHTIE_BG])
+        create_segmented_imgs_and_labels(id_img_map, annotations)
+
+main()

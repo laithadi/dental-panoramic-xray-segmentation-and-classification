@@ -2,16 +2,11 @@ import cv2
 import matplotlib.pyplot as plt
 import numpy as np
 import os
-import json
-
-TRAIN_PATH = "train/xrays"
-METADATA = "train/metadata.json"
-
-def load_json(path):
-    with open(path) as f:
-        metadata = json.load(f)
-    
-    return metadata
+from utils import load_json
+from constants import (
+    TRAIN_XRAY_PATH, 
+    METADATA,
+)
 
 def get_img_id(image_metadata, fname):
     for img_meta in image_metadata:
@@ -48,12 +43,15 @@ def show_with_bbox(id, im, annotations, box_type="polygon"):
     plt.imshow(im)
     plt.show()
 
-metadata = load_json(METADATA)
-image_metadata = metadata['images']
-annotations = metadata['annotations']
+def main():
+    metadata = load_json(METADATA)
+    image_metadata = metadata['images']
+    annotations = metadata['annotations']
 
-img_fname = "train_251.png"
-img_path = os.path.join(TRAIN_PATH, img_fname)
-im = cv2.imread(img_path)
-id = get_img_id(image_metadata, img_fname)
-show_with_bbox(id, im, annotations, "rectangle")
+    img_fname = "train_1.png"
+    img_path = os.path.join(TRAIN_XRAY_PATH, img_fname)
+    im = cv2.imread(img_path)
+    id = get_img_id(image_metadata, img_fname)
+    show_with_bbox(id, im, annotations, "rectangle")
+
+main()
