@@ -1,3 +1,6 @@
+# Aim of this project 
+The project aims to leverage a comprehensive dataset of dental panoramic X-rays, collected in 2023 and fully labeled with diagnoses among other attributes. The primary objective is to develop a segmentation model capable of accurately depicting each tooth within the panoramic X-ray images. These segmented tooth images will then be extracted and utilized as inputs for a Convolutional Neural Network (CNN). The CNN's role is to predict the diagnostic class for each tooth, thereby facilitating efficient and precise dental diagnosis.
+
 # Introduction 
 
 ## Link to dataset 
