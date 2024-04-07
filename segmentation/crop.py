@@ -107,7 +107,7 @@ def create_crop_img_with_mask_overlay(id_img_map, annotations, scale_fact):
             break
 
 def main():
-    EXPERIMENT_MODE = False
+    EXPERIMENT_MODE = True
     metadata = load_json(METADATA)
     image_metadata = metadata['images']
     annotations = metadata['annotations']

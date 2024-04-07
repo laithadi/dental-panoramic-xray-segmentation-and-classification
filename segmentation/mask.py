@@ -45,12 +45,14 @@ def create_img_masks(image_metadata, id_segment_map):
         mask = make_mask(im, segments, 0.9)
         write_dir(TRAIN_MASKS_PATH, mask, fname)
         
+def main():
+    metadata = load_json(METADATA)
+    image_metadata = metadata['images']
+    annotations = metadata['annotations']
+    id_segment_map = get_id_segment_map(annotations)
+    create_folders([TRAIN_MASKS_PATH])
+    create_img_masks(image_metadata, id_segment_map)
 
-metadata = load_json(METADATA)
-image_metadata = metadata['images']
-annotations = metadata['annotations']
-id_segment_map = get_id_segment_map(annotations)
-create_folders([TRAIN_MASKS_PATH])
-create_img_masks(image_metadata, id_segment_map)
+main()
 
 
