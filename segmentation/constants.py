@@ -1,5 +1,8 @@
 TRAIN_XRAY_PATH = "train/xrays"
 TRAIN_MASKS_PATH = "train/masks"
+GEN_POLYGON_PATH = "gen/polygonbox"
+GEN_OVERLAY_PATH = "gen/overlay"
+GEN_CROP_PATH = "gen/crop"
 METADATA = "train/metadata.json"
 
 CROPPED = "cropped_dataset/train/cropped"
@@ -9,4 +12,8 @@ WHTIE_BG = "cropped_dataset/train/white_bg"
 LABELS_PATH = "cropped_dataset/labels.csv"
 EXPERIMENT_PATH = "experiment"
 
-
+GEN_CROPPED = "gen/train/cropped"
+GEN_MASK = "gen/train/mask"
+GEN_BLACK_BG = "gen/train/black_bg"
+GEN_WHTIE_BG = "gen/train/white_bg"
+GEN_SOURCES_PATH = "gen/train/sources.csv"
