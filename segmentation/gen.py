@@ -4,7 +4,6 @@ from constants import (
     TRAIN_XRAY_PATH, 
     GEN_POLYGON_PATH, 
     GEN_OVERLAY_PATH, 
-    GEN_CROP_PATH,
     GEN_CROPPED,
     GEN_BLACK_BG,
     GEN_MASK, 
