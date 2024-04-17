@@ -1,0 +1,11 @@
+segmentation/test
+segmentation/train
+segmentation/cropped_dataset
+segmentation/experiment
+**/.DS_Store
+**/.venv
+**/__pycache__
+segmentation/extras
+segmentation/report_imgs
+segmentation/gen
+
